@@ -83,7 +83,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           /> */}
           <div className="hidden md:block border-l border-gray-300 h-8" />
           <h1 className="hidden md:inline text-lg font-bold text-gray-900">
-            Hệ thống quản trị du lịch
+            Quản lý tin tức
           </h1>
         </div>
 

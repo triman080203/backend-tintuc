@@ -29,7 +29,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
           {/* Logo section */}
           <div className="mb-8 text-center">
             <div className="flex items-center justify-center space-x-3">
-              <h1 className="text-3xl font-bold text-white drop-shadow-lg">Hệ thống quản trị du lịch</h1>
+              <h1 className="text-3xl font-bold text-white drop-shadow-lg">Quản lý tin tức</h1>
             </div>
             <p className="mt-2 text-white/80">Hệ thống quản trị hiện đại</p>
           </div>

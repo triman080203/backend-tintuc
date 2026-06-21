@@ -110,7 +110,7 @@ public class TransactionsMobileController : ControllerBase
         <span class=""info-value"">Quét mã QR</span>
       </div>
     </div>
-    <p class=""footer"">Hệ thống quản trị du lịch Tây Ninh</p>
+    <p class=""footer"">Quản lý tin tức Tây Ninh</p>
   </div>
 </body>
 </html>";
