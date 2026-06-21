@@ -1,0 +1,5 @@
+export { KhaoSatListPage } from './pages/KhaoSatListPage'
+export { KhaoSatDetailPage } from './pages/KhaoSatDetailPage'
+export { KhaoSatCreatePage } from './pages/KhaoSatCreatePage'
+export { KhaoSatEditPage } from './pages/KhaoSatEditPage'
+export { KhaoSatStatisticsPage } from './pages/KhaoSatStatisticsPage'

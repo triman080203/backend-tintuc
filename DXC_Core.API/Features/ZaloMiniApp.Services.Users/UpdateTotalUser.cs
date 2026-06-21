@@ -1,0 +1,87 @@
+using DXC_Core.API.Data.ZaloMiniAppContext;
+using DXC_Core.API.Shared.Contracts;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+namespace DXC_Core.API.Features.ZaloMiniApp.Services.Users;
+
+public static class UpdateTotalUser
+{
+    public class Command : IRequest<ApiResult<TotalUserDto>>
+    {
+        public int Id { get; set; }
+        public required string UserId { get; set; }
+        public required string Username { get; set; }
+        public string? Avatar { get; set; }
+        public string? PhanQuyen { get; set; }
+        public string? PhoneNumber { get; set; }
+    }
+
+    public class Validator : AbstractValidator<Command>
+    {
+        public Validator(ZaloMiniAppDbContext db)
+        {
+            RuleFor(x => x.Id).GreaterThan(0);
+            RuleFor(x => x.UserId).NotEmpty().MaximumLength(100);
+            RuleFor(x => x.Username).NotEmpty().MaximumLength(255);
+            RuleFor(x => x.Avatar).MaximumLength(500);
+            RuleFor(x => x.PhanQuyen).MaximumLength(100);
+            RuleFor(x => x.PhoneNumber).MaximumLength(20);
+            RuleFor(x => x.UserId)
+                .MustAsync(async (cmd, userId, ct) => !await db.TotalUsers.AnyAsync(t => t.UserId == userId && t.Id != cmd.Id, ct))
+                .WithMessage("UserId đã tồn tại");
+        }
+    }
+
+    public class Handler : IRequestHandler<Command, ApiResult<TotalUserDto>>
+    {
+        private readonly ZaloMiniAppDbContext _db;
+
+        public Handler(ZaloMiniAppDbContext db)
+        {
+            _db = db;
+        }
+
+        public async Task<ApiResult<TotalUserDto>> Handle(Command request, CancellationToken cancellationToken)
+        {
+            var entity = await _db.TotalUsers.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            if (entity == null)
+            {
+                return new ApiResult<TotalUserDto> { Success = false, Message = "Không tìm thấy" };
+            }
+
+            entity.UserId = request.UserId;
+            entity.Username = request.Username;
+            if (request.Avatar is not null)
+            {
+                entity.Avatar = request.Avatar;
+            }
+            if (request.PhanQuyen is not null)
+            {
+                entity.PhanQuyen = request.PhanQuyen;
+            }
+            if (request.PhoneNumber is not null)
+            {
+                entity.PhoneNumber = request.PhoneNumber;
+            }
+
+            await _db.SaveChangesAsync(cancellationToken);
+
+            return new ApiResult<TotalUserDto>
+            {
+                Success = true,
+                Data = new TotalUserDto
+                {
+                    Id = entity.Id,
+                    UserId = entity.UserId,
+                    Username = entity.Username,
+                    Avatar = entity.Avatar,
+                    PhanQuyen = entity.PhanQuyen,
+                    PhoneNumber = entity.PhoneNumber,
+                },
+                Message = "Cập nhật TotalUser thành công",
+            };
+        }
+    }
+}
