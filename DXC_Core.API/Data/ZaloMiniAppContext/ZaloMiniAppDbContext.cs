@@ -78,6 +78,13 @@ public class ZaloMiniAppDbContext : DbContext
     public DbSet<SurveyResponse> KhaoSatResponses { get; set; }
     public DbSet<EssayResponse> KhaoSatEssayResponses { get; set; }
 
+    // TINTUC Schema
+    public DbSet<Data.ZaloMiniAppContext.Models.TinTuc.ArticleCategory> TinTucCategories { get; set; }
+    public DbSet<Data.ZaloMiniAppContext.Models.TinTuc.ArticleStatus> TinTucStatuses { get; set; }
+    public DbSet<Data.ZaloMiniAppContext.Models.TinTuc.Article> TinTucArticles { get; set; }
+    public DbSet<Data.ZaloMiniAppContext.Models.TinTuc.ArticleAttachment> TinTucAttachments { get; set; }
+    public DbSet<Data.ZaloMiniAppContext.Models.TinTuc.ArticleProcessingHistory> TinTucProcessingHistories { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -101,6 +108,9 @@ public class ZaloMiniAppDbContext : DbContext
         ConfigureNewsSchema(modelBuilder);
         ConfigureBookingSchema(modelBuilder);
         ConfigurePaymentSchema(modelBuilder);
+        
+        // Configure TINTUC schema
+        ConfigureTinTucSchema(modelBuilder);
     }
 
     private static void ConfigurePlacesSchema(ModelBuilder modelBuilder)
@@ -1226,6 +1236,123 @@ public class ZaloMiniAppDbContext : DbContext
             entity.Property(a => a.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
         });
     }
+
+    private static void ConfigureTinTucSchema(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Data.ZaloMiniAppContext.Models.TinTuc.ArticleCategory>(entity =>
+        {
+            entity.ToTable("ArticleCategories", schema: "TINTUC");
+            entity.Property(c => c.PublicId).HasDefaultValueSql("NEWSEQUENTIALID()");
+            entity.HasIndex(c => c.PublicId).IsUnique();
+            entity.HasIndex(c => c.Slug).IsUnique();
+            entity.Property(c => c.Name).HasMaxLength(200).IsRequired();
+            entity.Property(c => c.Slug).HasMaxLength(200).IsRequired();
+            entity.Property(c => c.Description).HasMaxLength(500);
+            entity.Property(c => c.DisplayOrder).HasDefaultValue(0);
+            entity.Property(c => c.IsActive).HasDefaultValue(true);
+            entity.Property(c => c.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            entity.Property(c => c.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
+        });
+
+        modelBuilder.Entity<Data.ZaloMiniAppContext.Models.TinTuc.ArticleStatus>(entity =>
+        {
+            entity.ToTable("ArticleStatuses", schema: "TINTUC");
+            entity.Property(s => s.PublicId).HasDefaultValueSql("NEWSEQUENTIALID()");
+            entity.HasIndex(s => s.PublicId).IsUnique();
+            entity.HasIndex(s => s.Code).IsUnique();
+            entity.Property(s => s.Code).HasMaxLength(50).IsRequired();
+            entity.Property(s => s.Name).HasMaxLength(100).IsRequired();
+            entity.Property(s => s.Description).HasMaxLength(500);
+            entity.Property(s => s.Color).HasMaxLength(20);
+            entity.Property(s => s.IsActive).HasDefaultValue(true);
+            entity.Property(s => s.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            entity.Property(s => s.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
+            
+            // Seed Data for Statuses
+            entity.HasData(
+                new Data.ZaloMiniAppContext.Models.TinTuc.ArticleStatus { Id = 1, PublicId = Guid.NewGuid(), Code = "draft", Name = "Bản nháp", Color = "#6B7280", SortOrder = 1, IsActive = true, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Data.ZaloMiniAppContext.Models.TinTuc.ArticleStatus { Id = 2, PublicId = Guid.NewGuid(), Code = "pending_review", Name = "Chờ duyệt", Color = "#F59E0B", SortOrder = 2, IsActive = true, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Data.ZaloMiniAppContext.Models.TinTuc.ArticleStatus { Id = 3, PublicId = Guid.NewGuid(), Code = "returned", Name = "Trả lại", Color = "#EF4444", SortOrder = 3, IsActive = true, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Data.ZaloMiniAppContext.Models.TinTuc.ArticleStatus { Id = 4, PublicId = Guid.NewGuid(), Code = "approved", Name = "Đã duyệt", Color = "#3B82F6", SortOrder = 4, IsActive = true, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Data.ZaloMiniAppContext.Models.TinTuc.ArticleStatus { Id = 5, PublicId = Guid.NewGuid(), Code = "published", Name = "Đã xuất bản", Color = "#10B981", SortOrder = 5, IsActive = true, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Data.ZaloMiniAppContext.Models.TinTuc.ArticleStatus { Id = 6, PublicId = Guid.NewGuid(), Code = "archived", Name = "Thu hồi", Color = "#9CA3AF", SortOrder = 6, IsActive = true, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+            );
+        });
+
+        modelBuilder.Entity<Data.ZaloMiniAppContext.Models.TinTuc.Article>(entity =>
+        {
+            entity.ToTable("Articles", schema: "TINTUC");
+            entity.Property(a => a.PublicId).HasDefaultValueSql("NEWSEQUENTIALID()");
+            entity.HasIndex(a => a.PublicId).IsUnique();
+            entity.HasIndex(a => a.Slug).IsUnique();
+            entity.Property(a => a.Title).HasMaxLength(500).IsRequired();
+            entity.Property(a => a.Summary).HasMaxLength(1000);
+            entity.Property(a => a.Content).HasColumnType("nvarchar(max)").IsRequired();
+            entity.Property(a => a.ThumbnailUrl).HasMaxLength(500);
+            entity.Property(a => a.AuthorName).HasMaxLength(200);
+            entity.Property(a => a.Tags).HasMaxLength(500);
+            entity.Property(a => a.Slug).HasMaxLength(500);
+            entity.Property(a => a.IsPublic).HasDefaultValue(false);
+            entity.Property(a => a.ViewCount).HasDefaultValue(0);
+            entity.Property(a => a.IsActive).HasDefaultValue(true);
+            entity.Property(a => a.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            entity.Property(a => a.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
+
+            entity.HasOne(a => a.Category)
+                .WithMany(c => c.Articles)
+                .HasForeignKey(a => a.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(a => a.CurrentStatus)
+                .WithMany(s => s.Articles)
+                .HasForeignKey(a => a.CurrentStatusId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Data.ZaloMiniAppContext.Models.TinTuc.ArticleAttachment>(entity =>
+        {
+            entity.ToTable("ArticleAttachments", schema: "TINTUC");
+            entity.Property(a => a.PublicId).HasDefaultValueSql("NEWSEQUENTIALID()");
+            entity.HasIndex(a => a.PublicId).IsUnique();
+            entity.Property(a => a.FileName).HasMaxLength(500).IsRequired();
+            entity.Property(a => a.FileType).HasMaxLength(10);
+            entity.Property(a => a.IsActive).HasDefaultValue(true);
+            entity.Property(a => a.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+
+            entity.HasOne(a => a.Article)
+                .WithMany(ar => ar.Attachments)
+                .HasForeignKey(a => a.ArticleId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Data.ZaloMiniAppContext.Models.TinTuc.ArticleProcessingHistory>(entity =>
+        {
+            entity.ToTable("ArticleProcessingHistory", schema: "TINTUC");
+            entity.Property(p => p.PublicId).HasDefaultValueSql("NEWSEQUENTIALID()");
+            entity.HasIndex(p => p.PublicId).IsUnique();
+            entity.Property(p => p.Action).HasMaxLength(50);
+            entity.Property(p => p.ActorName).HasMaxLength(200);
+            entity.Property(p => p.Note).HasMaxLength(1000);
+            entity.Property(p => p.IsActive).HasDefaultValue(true);
+            entity.Property(p => p.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+
+            entity.HasOne(p => p.Article)
+                .WithMany(a => a.ProcessingHistories)
+                .HasForeignKey(p => p.ArticleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(p => p.FromStatus)
+                .WithMany()
+                .HasForeignKey(p => p.FromStatusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(p => p.ToStatus)
+                .WithMany()
+                .HasForeignKey(p => p.ToStatusId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+    }
+
 
     private static void ConfigureBookingSchema(ModelBuilder modelBuilder)
     {

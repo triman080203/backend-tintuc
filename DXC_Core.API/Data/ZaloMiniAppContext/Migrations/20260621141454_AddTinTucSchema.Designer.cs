@@ -4,16 +4,19 @@ using DXC_Core.API.Data.ZaloMiniAppContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DXC_Core.API.Migrations.ZaloMiniAppDb
+namespace DXC_Core.API.Data.ZaloMiniAppContext.Migrations
 {
     [DbContext(typeof(ZaloMiniAppDbContext))]
-    partial class ZaloMiniAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260621141454_AddTinTucSchema")]
+    partial class AddTinTucSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
