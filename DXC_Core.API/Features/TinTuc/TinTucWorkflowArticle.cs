@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DXC_Core.API.Features.TinTuc;
 
-public static class WorkflowArticle
+public static class TinTucWorkflowArticle
 {
     public class Command : IRequest<ApiResult>
     {

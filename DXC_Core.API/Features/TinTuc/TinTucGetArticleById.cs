@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DXC_Core.API.Features.TinTuc;
 
-public static class GetArticleById
+public static class TinTucGetArticleById
 {
-    public class Query : IRequest<ApiResult<ArticleDetailDto>>
+    public class Query : IRequest<ApiResult<TinTucArticleDetailDto>>
     {
         public required Guid PublicId { get; set; }
     }
 
-    public class Handler : IRequestHandler<Query, ApiResult<ArticleDetailDto>>
+    public class Handler : IRequestHandler<Query, ApiResult<TinTucArticleDetailDto>>
     {
         private readonly ZaloMiniAppDbContext _context;
 
@@ -21,7 +21,7 @@ public static class GetArticleById
             _context = context;
         }
 
-        public async Task<ApiResult<ArticleDetailDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<ApiResult<TinTucArticleDetailDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var article = await _context.TinTucArticles
                 .Include(a => a.CurrentStatus)
@@ -35,14 +35,14 @@ public static class GetArticleById
 
             if (article == null)
             {
-                return new ApiResult<ArticleDetailDto>
+                return new ApiResult<TinTucArticleDetailDto>
                 {
                     Success = false,
                     Message = "Không tìm thấy bài viết"
                 };
             }
 
-            var dto = new ArticleDetailDto
+            var dto = new TinTucArticleDetailDto
             {
                 Id = article.Id,
                 PublicId = article.PublicId,
@@ -96,7 +96,7 @@ public static class GetArticleById
                 }).ToList()
             };
 
-            return new ApiResult<ArticleDetailDto>
+            return new ApiResult<TinTucArticleDetailDto>
             {
                 Success = true,
                 Data = dto

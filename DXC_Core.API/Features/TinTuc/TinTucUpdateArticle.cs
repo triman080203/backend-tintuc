@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DXC_Core.API.Features.TinTuc;
 
-public static class UpdateArticle
+public static class TinTucUpdateArticle
 {
     public class Command : IRequest<ApiResult>
     {

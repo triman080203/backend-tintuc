@@ -18,7 +18,13 @@ import {
   Newspaper,
   Map,
   ShoppingCart,
-  Ticket, MessageSquare, XCircle, CheckCircle, ArrowRightLeft, Clock
+  Ticket,
+  MessageSquare,
+  XCircle,
+  CheckCircle,
+  ArrowRightLeft,
+  Clock,
+  FileText
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -196,30 +202,6 @@ const hotlineMenus: NavItemConfig[] = [
   },
 ]
 
-// const iconMenus: NavItemConfig[] = [
-//   {
-//     id: 'icon-categories',
-//     name: 'Quản lý danh mục icon',
-//     href: '/icon-categories',
-//     icon: Smile,
-//     roles: ['admin', generateRoleCodeFromMenuName('Quản lý danh mục icon')],
-//   },
-//   {
-//     id: 'icon-groups',
-//     name: 'Quản lý nhóm icon',
-//     href: '/icon-groups',
-//     icon: Smile,
-//     roles: ['admin', generateRoleCodeFromMenuName('Quản lý nhóm icon')],
-//   },
-//   {
-//     id: 'icons',
-//     name: 'Quản lý icon',
-//     href: '/icons',
-//     icon: Smile,
-//     roles: ['admin', generateRoleCodeFromMenuName('Quản lý icon')],
-//   },
-// ]
-
 const khaoSatMenus: NavItemConfig[] = [
   {
     id: 'khaosat-list',
@@ -237,31 +219,49 @@ const khaoSatMenus: NavItemConfig[] = [
   },
 ]
 
-// const supportGroupMenus: NavItemConfig[] = [
-//   {
-//     id: 'support-group-categories',
-//     name: 'Quản lý danh mục nhóm hỗ trợ',
-//     href: '/support-group-categories',
-//     icon: Phone,
-//     roles: ['admin', generateRoleCodeFromMenuName('Quản lý danh mục nhóm hỗ trợ')],
-//   },
-//   {
-//     id: 'support-groups',
-//     name: 'Nhóm hỗ trợ',
-//     href: '/support-groups',
-//     icon: Phone,
-//     roles: ['admin', generateRoleCodeFromMenuName('Nhóm hỗ trợ')],
-//   },
-// ]
+export const navigationGroups: NavGroup[] = [
+  {
+    id: 'tin-tuc',
+    items: [
+      {
+        id: 'quan-ly-tin-tuc',
+        name: 'Quản lý tin tức',
+        icon: Newspaper,
+        roles: ['admin', generateRoleCodeFromMenuName('Quản lý tin bài')],
+        children: [
+          {
+            id: 'danh-muc-tin-tuc',
+            name: 'Danh mục tin tức',
+            href: '/tin-tuc/categories',
+            roles: ['admin', generateRoleCodeFromMenuName('Danh mục tin tức')],
+          },
+          {
+            id: 'quan-ly-tin-bai',
+            name: 'Quản lý tin bài',
+            href: '/tin-tuc',
+            roles: ['admin', generateRoleCodeFromMenuName('Quản lý tin bài')],
+          }
+        ]
+      }
+    ]
+  },
+]
 
 const newsMenus: NavItemConfig[] = [
   {
-    id: 'news',
-    name: 'Quản lý tin tức',
-    href: '/news',
+    id: 'danh-muc-tin-tuc',
+    name: 'Danh mục tin tức',
+    href: '/tin-tuc/categories',
     icon: Newspaper,
-    roles: ['admin', generateRoleCodeFromMenuName('Quản lý tin tức')],
+    roles: ['admin', generateRoleCodeFromMenuName('Danh mục tin tức')],
   },
+  {
+    id: 'quan-ly-tin-bai',
+    name: 'Quản lý tin bài',
+    href: '/tin-tuc',
+    icon: FileText,
+    roles: ['admin', 'manager', 'editor', generateRoleCodeFromMenuName('Quản lý tin bài')],
+  }
 ]
 
 const bookingMenus: NavItemConfig[] = [
@@ -303,13 +303,6 @@ const adminMenus: NavItemConfig[] = [
     icon: Users,
     roles: ['admin', generateRoleCodeFromMenuName('Quản lý người dùng')],
   },
-  // {
-  //   id: 'total-users',
-  //   name: 'Thống kê người dùng',
-  //   href: '/total-users',
-  //   icon: Users,
-  //   roles: ['admin', generateRoleCodeFromMenuName('Thống kê người dùng')],
-  // },
   {
     id: 'roles',
     name: 'Quản lý vai trò',
@@ -397,15 +390,6 @@ export const navigationConfig: NavItemConfig[] = [
     children: hotlineMenus,
   },
 
-  // Icon Management - Admin only
-  // {
-  //   id: 'icon',
-  //   name: 'Quản lý icon động',
-  //   icon: Smile,
-  //   roles: calculateParentRoles(iconMenus),
-  //   children: iconMenus,
-  // },
-
   // Survey Management - Admin only
   {
     id: 'khaosat',
@@ -414,15 +398,6 @@ export const navigationConfig: NavItemConfig[] = [
     roles: calculateParentRoles(khaoSatMenus),
     children: khaoSatMenus,
   },
-
-  // Support Group Management - Admin only
-  // {
-  //   id: 'support-group',
-  //   name: 'Quản lý nhóm hỗ trợ',
-  //   icon: Phone,
-  //   roles: calculateParentRoles(supportGroupMenus),
-  //   children: supportGroupMenus,
-  // },
 
   // Admin System Management - Admin only
   {

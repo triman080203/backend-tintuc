@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DXC_Core.API.Features.TinTuc;
 
-public static class GetArticles
+public static class TinTucGetArticles
 {
-    public class Query : IRequest<PagedResult<ArticleDto>>
+    public class Query : IRequest<PagedResult<TinTucArticleDto>>
     {
         public int Current { get; set; } = 1;
         public int PageSize { get; set; } = 10;
@@ -22,7 +22,7 @@ public static class GetArticles
         public DateTime? CreatedTo { get; set; }
     }
 
-    public class Handler : IRequestHandler<Query, PagedResult<ArticleDto>>
+    public class Handler : IRequestHandler<Query, PagedResult<TinTucArticleDto>>
     {
         private readonly ZaloMiniAppDbContext _context;
 
@@ -31,7 +31,7 @@ public static class GetArticles
             _context = context;
         }
 
-        public async Task<PagedResult<ArticleDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PagedResult<TinTucArticleDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var query = _context.TinTucArticles
                 .Include(a => a.CurrentStatus)
@@ -80,39 +80,38 @@ public static class GetArticles
 
             var total = await query.CountAsync(cancellationToken);
 
-            var articles = await query
+            var items = await query
                 .OrderByDescending(a => a.CreatedAt)
                 .Skip((request.Current - 1) * request.PageSize)
                 .Take(request.PageSize)
+                .Select(a => new TinTucArticleDto
+                {
+                    Id = a.Id,
+                    PublicId = a.PublicId,
+                    Title = a.Title,
+                    Summary = a.Summary,
+                    ThumbnailUrl = a.ThumbnailUrl,
+                    CategoryId = a.CategoryId,
+                    CategoryName = a.Category!.Name,
+                    CurrentStatusId = a.CurrentStatusId,
+                    CurrentStatusCode = a.CurrentStatus!.Code,
+                    CurrentStatusName = a.CurrentStatus!.Name,
+                    CurrentStatusColor = a.CurrentStatus!.Color,
+                    AuthorUserPublicId = a.AuthorUserPublicId,
+                    AuthorName = a.AuthorName,
+                    ViewCount = a.ViewCount,
+                    IsPublic = a.IsPublic,
+                    PublishedAt = a.PublishedAt,
+                    IsActive = a.IsActive,
+                    CreatedAt = a.CreatedAt,
+                    UpdatedAt = a.UpdatedAt
+                })
                 .ToListAsync(cancellationToken);
 
-            var dtos = articles.Select(a => new ArticleDto
-            {
-                Id = a.Id,
-                PublicId = a.PublicId,
-                Title = a.Title,
-                Summary = a.Summary,
-                ThumbnailUrl = a.ThumbnailUrl,
-                CategoryId = a.CategoryId,
-                CategoryName = a.Category?.Name,
-                CurrentStatusId = a.CurrentStatusId,
-                CurrentStatusCode = a.CurrentStatus?.Code,
-                CurrentStatusName = a.CurrentStatus?.Name,
-                CurrentStatusColor = a.CurrentStatus?.Color,
-                AuthorUserPublicId = a.AuthorUserPublicId,
-                AuthorName = a.AuthorName,
-                ViewCount = a.ViewCount,
-                IsPublic = a.IsPublic,
-                PublishedAt = a.PublishedAt,
-                IsActive = a.IsActive,
-                CreatedAt = a.CreatedAt,
-                UpdatedAt = a.UpdatedAt
-            }).ToList();
-
-            return new PagedResult<ArticleDto>
+            return new PagedResult<TinTucArticleDto>
             {
                 Success = true,
-                Data = dtos,
+                Data = items,
                 Total = total,
                 Current = request.Current,
                 PageSize = request.PageSize,

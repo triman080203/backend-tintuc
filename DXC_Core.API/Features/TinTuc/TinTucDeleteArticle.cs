@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DXC_Core.API.Features.TinTuc;
 
-public static class DeleteArticle
+public static class TinTucDeleteArticle
 {
     public class Command : IRequest<ApiResult>
     {

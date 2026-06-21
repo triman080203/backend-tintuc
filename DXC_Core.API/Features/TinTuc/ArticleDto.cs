@@ -2,7 +2,7 @@ using System;
 
 namespace DXC_Core.API.Features.TinTuc;
 
-public class ArticleDto
+public class TinTucArticleDto
 {
     public int Id { get; set; }
     public Guid PublicId { get; set; }
@@ -30,7 +30,7 @@ public class ArticleDto
     public DateTime UpdatedAt { get; set; }
 }
 
-public class ArticleDetailDto : ArticleDto
+public class TinTucArticleDetailDto : TinTucArticleDto
 {
     public required string Content { get; set; }
     public string? Tags { get; set; }

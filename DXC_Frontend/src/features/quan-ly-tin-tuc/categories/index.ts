@@ -1,0 +1,7 @@
+export * from './schemas'
+export * from './hooks'
+export * from './components/TinTucCategoryForm'
+export * from './components/TinTucCategoryTable'
+export * from './pages/TinTucCategoryListPage'
+export * from './pages/TinTucCategoryCreatePage'
+export * from './pages/TinTucCategoryUpdatePage'

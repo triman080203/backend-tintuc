@@ -43,6 +43,14 @@ import { NewsListPage, NewsCreatePage, NewsDetailPage, NewsEditPage } from '@/fe
 import { TourListPage, TourCreatePage, TourDetailPage, TourEditPage } from '@/features/tours'
 import { OrderListPage, OrderDetailPage, OrderEditPage } from '@/features/orders'
 import { TicketListPage, TicketCreatePage, TicketDetailPage, TicketEditPage } from '@/features/tickets'
+import { 
+  TinTucListPage, 
+  TinTucCreatePage, 
+  TinTucUpdatePage,
+  TinTucCategoryListPage,
+  TinTucCategoryCreatePage,
+  TinTucCategoryUpdatePage
+} from "@/features/quan-ly-tin-tuc";
 
 // Protected Route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -638,6 +646,15 @@ export const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
+
+        {/* Quan Ly Tin Tuc Routes */}
+        <Route path="/tin-tuc" element={<ProtectedRoute><TinTucListPage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/create" element={<ProtectedRoute><TinTucCreatePage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/:id" element={<ProtectedRoute><TinTucUpdatePage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/categories" element={<ProtectedRoute><TinTucCategoryListPage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/categories/create" element={<ProtectedRoute><TinTucCategoryCreatePage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/categories/:id" element={<ProtectedRoute><TinTucCategoryUpdatePage /></ProtectedRoute>} />
+
         {/* Hotlines routes */}
         <Route
           path="/hotlines"
