@@ -1,5 +1,6 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
+import JoditEditor from 'jodit-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
@@ -52,6 +53,16 @@ export const TinTucForm = ({
       attachmentPublicIds: initialData?.attachments?.map(a => a.publicId || '').filter(Boolean) || [],
     },
   })
+
+  const editorConfig = useMemo(() => ({
+    readonly: false,
+    placeholder: 'Nội dung chi tiết tin bài...',
+    enableDragAndDropFileToEditor: true,
+    uploader: {
+        insertImageAsBase64URI: true
+    },
+    height: 450,
+  }), [])
 
   const handleFormSubmit = (data: TinTucFormData) => {
     onSubmit(data)
@@ -113,11 +124,14 @@ export const TinTucForm = ({
                 Nội dung <span className="text-destructive">*</span>
               </FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Nội dung chi tiết tin bài..."
-                  className="min-h-[300px]"
-                  {...field}
-                />
+                <div className="prose-editor">
+                  <JoditEditor
+                    value={field.value || ''}
+                    config={editorConfig}
+                    onBlur={(newContent) => field.onChange(newContent)}
+                    onChange={(newContent) => field.onChange(newContent)}
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

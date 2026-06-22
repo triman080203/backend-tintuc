@@ -24,7 +24,12 @@ import {
   CheckCircle,
   ArrowRightLeft,
   Clock,
-  FileText
+  FileText,
+  PenLine,
+  Clock3,
+  CheckCircle2,
+  Globe,
+  CornerDownLeft,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -256,12 +261,47 @@ const newsMenus: NavItemConfig[] = [
     roles: ['admin', generateRoleCodeFromMenuName('Danh mục tin tức')],
   },
   {
-    id: 'quan-ly-tin-bai',
-    name: 'Quản lý tin bài',
+    id: 'tat-ca-tin-bai',
+    name: 'Tất cả tin bài',
     href: '/tin-tuc',
     icon: FileText,
     roles: ['admin', 'manager', 'editor', generateRoleCodeFromMenuName('Quản lý tin bài')],
-  }
+  },
+  {
+    id: 'tin-bai-ban-nhap',
+    name: 'Bản nháp',
+    href: '/tin-tuc/ban-nhap',
+    icon: PenLine,
+    roles: ['admin', 'manager', 'editor', generateRoleCodeFromMenuName('Quản lý tin bài')],
+  },
+  {
+    id: 'tin-bai-cho-duyet',
+    name: 'Chờ duyệt',
+    href: '/tin-tuc/cho-duyet',
+    icon: Clock3,
+    roles: ['admin', 'manager', 'editor', generateRoleCodeFromMenuName('Quản lý tin bài')],
+  },
+  {
+    id: 'tin-bai-da-duyet',
+    name: 'Đã duyệt',
+    href: '/tin-tuc/da-duyet',
+    icon: CheckCircle2,
+    roles: ['admin', 'manager', generateRoleCodeFromMenuName('Quản lý tin bài')],
+  },
+  {
+    id: 'tin-bai-da-xuat-ban',
+    name: 'Đã xuất bản',
+    href: '/tin-tuc/da-xuat-ban',
+    icon: Globe,
+    roles: ['admin', 'manager', generateRoleCodeFromMenuName('Quản lý tin bài')],
+  },
+  {
+    id: 'tin-bai-bi-tra-lai',
+    name: 'Bị trả lại',
+    href: '/tin-tuc/bi-tra-lai',
+    icon: CornerDownLeft,
+    roles: ['admin', 'manager', 'editor', generateRoleCodeFromMenuName('Quản lý tin bài')],
+  },
 ]
 
 const bookingMenus: NavItemConfig[] = [

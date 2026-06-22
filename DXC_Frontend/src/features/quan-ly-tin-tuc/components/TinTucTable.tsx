@@ -21,7 +21,7 @@ export const TinTucTable = ({
   data,
   isLoading = false,
   pagination,
-  detailPath = '/tin-tuc',
+  detailPath = '/tin-tuc/detail',
 }: TinTucTableProps) => {
   const navigate = useNavigate()
 

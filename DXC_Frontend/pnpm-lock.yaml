@@ -65,6 +65,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      jodit-react:
+        specifier: ^5.3.21
+        version: 5.3.21(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       lucide-react:
         specifier: ^0.544.0
         version: 0.544.0(react@19.1.1)
@@ -2583,6 +2586,15 @@ packages:
   jiti@2.6.0:
     resolution: {integrity: sha512-VXe6RjJkBPj0ohtqaO8vSWP3ZhAKo66fKrFNCll4BTcwljPLz03pCbaNKfzGP5MbrCYcbJ7v0nOYYwUzTEIdXQ==}
     hasBin: true
+
+  jodit-react@5.3.21:
+    resolution: {integrity: sha512-dSFVKkrDVbhVwKDjuFMJ3HhPdqeEz/Yz5MhJf9v9B3Gg29CnelKCZ00h6MxXzlhglF3qvtvUTc2HSKrSB15khw==}
+    peerDependencies:
+      react: ~0.14 || ^15 || ^16 || ^17 || ^18 || ^19
+      react-dom: ~0.14 || ^15 || ^16 || ^17 || ^18 || ^19
+
+  jodit@4.12.27:
+    resolution: {integrity: sha512-Gc8QH6szUbwV2oFvflxeaTfKf9RyXdOHdMLcKuK2OekejKuXfSy85FQlMyHQOjQFMFKd6FuDU1pyVVPaj2BjZQ==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -6494,6 +6506,14 @@ snapshots:
   isexe@3.1.1: {}
 
   jiti@2.6.0: {}
+
+  jodit-react@5.3.21(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
+    dependencies:
+      jodit: 4.12.27
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
+
+  jodit@4.12.27: {}
 
   js-tokens@4.0.0: {}
 

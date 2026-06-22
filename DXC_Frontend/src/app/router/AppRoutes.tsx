@@ -47,9 +47,15 @@ import {
   TinTucListPage, 
   TinTucCreatePage, 
   TinTucUpdatePage,
+  TinTucDetailPage,
   TinTucCategoryListPage,
   TinTucCategoryCreatePage,
-  TinTucCategoryUpdatePage
+  TinTucCategoryUpdatePage,
+  TinTucBanNhapPage,
+  TinTucChoDuyetPage,
+  TinTucDaDuyetPage,
+  TinTucDaXuatBanPage,
+  TinTucBiTraLaiPage,
 } from "@/features/quan-ly-tin-tuc";
 
 // Protected Route component
@@ -650,10 +656,16 @@ export const AppRoutes = () => {
         {/* Quan Ly Tin Tuc Routes */}
         <Route path="/tin-tuc" element={<ProtectedRoute><TinTucListPage /></ProtectedRoute>} />
         <Route path="/tin-tuc/create" element={<ProtectedRoute><TinTucCreatePage /></ProtectedRoute>} />
-        <Route path="/tin-tuc/:id" element={<ProtectedRoute><TinTucUpdatePage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/ban-nhap" element={<ProtectedRoute><TinTucBanNhapPage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/cho-duyet" element={<ProtectedRoute><TinTucChoDuyetPage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/da-duyet" element={<ProtectedRoute><TinTucDaDuyetPage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/da-xuat-ban" element={<ProtectedRoute><TinTucDaXuatBanPage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/bi-tra-lai" element={<ProtectedRoute><TinTucBiTraLaiPage /></ProtectedRoute>} />
         <Route path="/tin-tuc/categories" element={<ProtectedRoute><TinTucCategoryListPage /></ProtectedRoute>} />
         <Route path="/tin-tuc/categories/create" element={<ProtectedRoute><TinTucCategoryCreatePage /></ProtectedRoute>} />
         <Route path="/tin-tuc/categories/:id" element={<ProtectedRoute><TinTucCategoryUpdatePage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/detail/:id" element={<ProtectedRoute><TinTucDetailPage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/:id" element={<ProtectedRoute><TinTucUpdatePage /></ProtectedRoute>} />
 
         {/* Hotlines routes */}
         <Route
