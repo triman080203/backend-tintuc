@@ -50,15 +50,7 @@ const TinTucDaDuyetPage = () => {
         ]}
         actionBarContent={
           <>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/tin-tuc/create')}
-              className="gap-2"
-            >
-              <Plus className="w-4 h-4 text-blue-600" />
-              Tạo tin bài
-            </Button>
+
             <Button
               variant="ghost"
               size="sm"
