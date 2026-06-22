@@ -61,7 +61,14 @@ axiosInstance.interceptors.response.use(
 // 4. Hàm customRequest được Orval sử dụng, đã được nâng cấp
 export const customRequest = <T>(config: AxiosRequestConfig): Promise<T> => {
   return axiosInstance
-    .request({ ...config, headers: { 'Content-Type': 'application/json', ...config.headers } })
+    .request({
+      ...config,
+      headers: {
+        // Chỉ set Content-Type mặc định nếu không phải FormData (để axios tự xử lý boundary)
+        ...(config.data instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
+        ...config.headers,
+      },
+    })
     .then((response: AxiosResponse<ApiResponse>) => {
       const result = response.data
 

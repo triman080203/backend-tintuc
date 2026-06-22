@@ -22,6 +22,7 @@ import {
 import { tinTucSchema, type TinTucFormData } from '../schemas'
 import { useTinTucCategoryList } from '../categories/hooks'
 import type { TinTucArticleDetailDto } from '@/api/models'
+import { ThumbnailUploader } from './ThumbnailUploader'
 
 interface TinTucFormProps {
   initialData?: TinTucArticleDetailDto
@@ -181,6 +182,41 @@ export const TinTucForm = ({
             )}
           />
         </div>
+
+        <FormField
+          control={form.control}
+          name="thumbnailUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Ảnh thumbnail</FormLabel>
+              <FormControl>
+                <ThumbnailUploader
+                  value={field.value || ''}
+                  onChange={(url) => field.onChange(url)}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="tags"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Từ khóa (tags)</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Nhập từ khóa, phân cách bằng dấu phẩy (VD: kinh tế, xã hội)"
+                  {...field}
+                  value={field.value || ''}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </form>
     </Form>
   )

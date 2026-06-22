@@ -18,6 +18,11 @@ export const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
     return <AuthLayout>{children}</AuthLayout>
   }
   
+  // Nếu là baochi route, không sử dụng layout quản trị
+  if (location.pathname.startsWith('/baochi')) {
+    return <>{children}</>
+  }
+  
   // Các routes khác sử dụng MainLayout
   return <MainLayout>{children}</MainLayout>
 }

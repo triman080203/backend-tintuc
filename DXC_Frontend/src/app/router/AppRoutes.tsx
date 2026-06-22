@@ -58,6 +58,12 @@ import {
   TinTucBiTraLaiPage,
   TinTucDaThuHoiPage,
 } from "@/features/quan-ly-tin-tuc";
+import {
+  BaoChiLayout,
+  BaoChiHomePage,
+  BaoChiDetailPage,
+  BaoChiCategoryPage
+} from "@/features/bao-chi";
 
 // Protected Route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -96,6 +102,32 @@ export const AppRoutes = () => {
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Đang tải...</div>}>
       <div key={location.pathname}>
         <Routes>
+        {/* Public Bao Chi Routes */}
+        <Route
+          path="/baochi"
+          element={
+            <BaoChiLayout>
+              <BaoChiHomePage />
+            </BaoChiLayout>
+          }
+        />
+        <Route
+          path="/baochi/chi-tiet/:id"
+          element={
+            <BaoChiLayout>
+              <BaoChiDetailPage />
+            </BaoChiLayout>
+          }
+        />
+        <Route
+          path="/baochi/chuyen-muc/:categoryId"
+          element={
+            <BaoChiLayout>
+              <BaoChiCategoryPage />
+            </BaoChiLayout>
+          }
+        />
+
         {/* Auth routes */}
         <Route
           path="/login"
