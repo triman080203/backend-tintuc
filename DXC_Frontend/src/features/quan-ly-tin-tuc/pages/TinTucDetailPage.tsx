@@ -43,9 +43,10 @@ const TinTucDetailPage = () => {
   
   // Quyền: admin/manager coi như full quyền.
   // Các roles nghiệp vụ: tong_bien_tap (Tổng biên tập), bien_tap_vien (Biên tập viên/editor), phong_vien (Phóng viên/reporter)
-  const isSuperAccess = roles.includes('admin') || roles.includes('manager') || roles.includes('tong_bien_tap')
+  const isSuperAccess = roles.includes('admin') || roles.includes('manager')
   const isBienTapVien = roles.includes('bien_tap_vien') || roles.includes('editor')
   const isPhongVien = roles.includes('phong_vien') || roles.includes('reporter')
+  const isTongBienTap = roles.includes('tong_bien_tap')
 
   const isDraftOrReturned = detail?.currentStatusCode === 'draft' || detail?.currentStatusCode === 'returned'
   const isPending = detail?.currentStatusCode === 'pending_review'
@@ -60,11 +61,11 @@ const TinTucDetailPage = () => {
   const canApprove = isPending && (isSuperAccess || isBienTapVien)
   
   // Tổng biên tập có thể trả lại bài đang chờ duyệt hoặc đã duyệt
-  const canReturn = (isPending && (isSuperAccess || isBienTapVien)) || (isApproved && isSuperAccess)
+  const canReturn = (isPending && (isSuperAccess || isBienTapVien)) || (isApproved && (isSuperAccess || isTongBienTap))
   
   // Xuất bản / Lưu trữ thường do Tổng biên tập hoặc Admin/Manager
-  const canPublish = isApproved && isSuperAccess
-  const canArchive = isPublished && isSuperAccess
+  const canPublish = isApproved && (isSuperAccess || isTongBienTap)
+  const canArchive = isPublished && (isSuperAccess || isTongBienTap)
 
   const formatDate = (date: string | null | undefined) => {
     if (!date) return 'Chưa có'
@@ -145,7 +146,7 @@ const TinTucDetailPage = () => {
               className="gap-2"
             >
               <CheckCircle className="w-4 h-4 text-emerald-600" />
-              Phê duyệt
+              Gửi Tổng biên tập
             </Button>
           )}
 
@@ -351,7 +352,7 @@ const TinTucDetailPage = () => {
                         onClick={() => handleWorkflow('approve')}
                       >
                         <CheckCircle className="w-4 h-4" />
-                        Phê duyệt
+                        Gửi Tổng biên tập
                       </Button>
                     )}
                     {canReturn && (

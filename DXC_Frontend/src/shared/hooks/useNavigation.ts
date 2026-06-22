@@ -26,7 +26,7 @@ const isPathMatchingRoute = (currentPath: string, href: string | undefined): boo
     const featureRoutes = new Set([
       'processing', 'approval', 'public', 'rejected', 'create', 'edit',
       'import', 'export', 'filter', 'search', 'settings', 'config',
-      'ban-nhap', 'cho-duyet', 'da-duyet', 'da-xuat-ban', 'bi-tra-lai', 'categories'
+      'ban-nhap', 'cho-duyet', 'da-duyet', 'da-xuat-ban', 'bi-tra-lai', 'categories', 'da-thu-hoi'
     ])
     
     // If first segment is a feature route name, don't match parent

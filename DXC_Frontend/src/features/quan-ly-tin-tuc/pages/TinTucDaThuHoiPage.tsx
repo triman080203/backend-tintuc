@@ -5,13 +5,11 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Input } from '@/components/ui/input'
 import { ListPageLayout } from '@/shared/components'
 import { usePagination } from '@/shared/hooks'
-import { Plus, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { TinTucTable } from '../components'
 import { useTinTucList } from '../hooks'
 
-const TinTucChoDuyetPage = () => {
-  const navigate = useNavigate()
-
+const TinTucDaThuHoiPage = () => {
   const { page, pageSize, setPage, setPageSize, getPaginationParams } = usePagination(10)
   const [searchTerm, setSearchTerm] = useState('')
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -20,7 +18,7 @@ const TinTucChoDuyetPage = () => {
   const { data, isLoading } = useTinTucList({
     ...getPaginationParams(),
     Keyword: searchTerm || undefined,
-    CurrentStatusId: 2, // pending_review — Chờ duyệt
+    CurrentStatusId: 6, // archived — Đã thu hồi
   })
 
   const handleSearch = () => {
@@ -42,15 +40,14 @@ const TinTucChoDuyetPage = () => {
   return (
     <>
       <ListPageLayout
-        title="Chờ biên tập"
-        description="Danh sách tin bài đang chờ thư ký biên tập duyệt"
+        title="Đã thu hồi"
+        description="Danh sách các tin bài đã bị thu hồi khỏi cổng thông tin"
         breadcrumbItems={[
           { label: 'Quản lý tin tức', href: '/tin-tuc' },
-          { label: 'Chờ biên tập', current: true },
+          { label: 'Đã thu hồi', current: true },
         ]}
         actionBarContent={
           <>
-
             <Button
               variant="ghost"
               size="sm"
@@ -101,4 +98,4 @@ const TinTucChoDuyetPage = () => {
   )
 }
 
-export default TinTucChoDuyetPage
+export default TinTucDaThuHoiPage

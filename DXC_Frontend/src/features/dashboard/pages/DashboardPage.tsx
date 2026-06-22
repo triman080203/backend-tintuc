@@ -15,6 +15,7 @@ import {
   Shield,
   Building2,
   Image,
+  Archive,
 } from 'lucide-react'
 
 export const DashboardPage = () => {
@@ -47,15 +48,15 @@ export const DashboardPage = () => {
     },
     {
       id: 'news-pending',
-      label: 'Tin bài chờ duyệt',
+      label: 'Tin bài chờ biên tập',
       href: '/tin-tuc/cho-duyet',
       icon: Clock,
       iconColor: 'text-amber-600',
-      visible: hasRole('phong_vien') || hasRole('bien_tap_vien') || hasRole('tong_bien_tap'),
+      visible: hasRole('phong_vien') || hasRole('bien_tap_vien'),
     },
     {
       id: 'news-approved',
-      label: 'Tin bài đã duyệt',
+      label: 'Tin bài chờ xuất bản',
       href: '/tin-tuc/da-duyet',
       icon: CheckCircle,
       iconColor: 'text-green-600',
@@ -70,12 +71,20 @@ export const DashboardPage = () => {
       visible: hasRole('tong_bien_tap'),
     },
     {
+      id: 'news-archived',
+      label: 'Tin bài đã thu hồi',
+      href: '/tin-tuc/da-thu-hoi',
+      icon: Archive,
+      iconColor: 'text-gray-600',
+      visible: hasRole('tong_bien_tap'),
+    },
+    {
       id: 'news-returned',
       label: 'Tin bài chuyển trả',
       href: '/tin-tuc/bi-tra-lai',
       icon: XCircle,
       iconColor: 'text-red-600',
-      visible: hasRole('phong_vien') || hasRole('bien_tap_vien'),
+      visible: hasRole('phong_vien') || hasRole('bien_tap_vien') || hasRole('tong_bien_tap'),
     },
     {
       id: 'news-create',
@@ -153,19 +162,19 @@ export const DashboardPage = () => {
           loading={statsLoading}
         />
         <StatsCard
-          title="Chờ duyệt"
+          title="Chờ biên tập"
           value={stats?.pendingNews ?? '--'}
           icon={Clock}
           iconColor="text-amber-600"
-          description="Tin bài đang chờ phê duyệt"
+          description="Tin bài đang chờ biên tập"
           loading={statsLoading}
         />
         <StatsCard
-          title="Đã phê duyệt"
+          title="Chờ xuất bản"
           value={stats?.approvedNews ?? '--'}
           icon={CheckCircle}
           iconColor="text-green-600"
-          description="Tin bài đã được phê duyệt"
+          description="Tin bài đã biên tập, chờ Tổng biên tập"
           loading={statsLoading}
         />
         <StatsCard

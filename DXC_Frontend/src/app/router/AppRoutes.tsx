@@ -56,6 +56,7 @@ import {
   TinTucDaDuyetPage,
   TinTucDaXuatBanPage,
   TinTucBiTraLaiPage,
+  TinTucDaThuHoiPage,
 } from "@/features/quan-ly-tin-tuc";
 
 // Protected Route component
@@ -661,6 +662,7 @@ export const AppRoutes = () => {
         <Route path="/tin-tuc/da-duyet" element={<ProtectedRoute><TinTucDaDuyetPage /></ProtectedRoute>} />
         <Route path="/tin-tuc/da-xuat-ban" element={<ProtectedRoute><TinTucDaXuatBanPage /></ProtectedRoute>} />
         <Route path="/tin-tuc/bi-tra-lai" element={<ProtectedRoute><TinTucBiTraLaiPage /></ProtectedRoute>} />
+        <Route path="/tin-tuc/da-thu-hoi" element={<ProtectedRoute><TinTucDaThuHoiPage /></ProtectedRoute>} />
         <Route path="/tin-tuc/categories" element={<ProtectedRoute><TinTucCategoryListPage /></ProtectedRoute>} />
         <Route path="/tin-tuc/categories/create" element={<ProtectedRoute><TinTucCategoryCreatePage /></ProtectedRoute>} />
         <Route path="/tin-tuc/categories/:id" element={<ProtectedRoute><TinTucCategoryUpdatePage /></ProtectedRoute>} />

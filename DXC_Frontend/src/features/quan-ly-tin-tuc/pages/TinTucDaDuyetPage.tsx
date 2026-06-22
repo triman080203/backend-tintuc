@@ -42,11 +42,11 @@ const TinTucDaDuyetPage = () => {
   return (
     <>
       <ListPageLayout
-        title="Đã duyệt"
-        description="Danh sách tin bài đã được phê duyệt, sẵn sàng xuất bản"
+        title="Chờ xuất bản"
+        description="Danh sách tin bài đã biên tập xong, chờ Tổng biên tập phê duyệt xuất bản"
         breadcrumbItems={[
           { label: 'Quản lý tin tức', href: '/tin-tuc' },
-          { label: 'Đã duyệt', current: true },
+          { label: 'Chờ xuất bản', current: true },
         ]}
         actionBarContent={
           <>

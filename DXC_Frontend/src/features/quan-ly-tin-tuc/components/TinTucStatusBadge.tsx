@@ -65,7 +65,7 @@ export const TinTucStatusBadge = ({
           style={{ backgroundColor: badgeColor }}
         />
       </span>
-      {statusName || statusCode}
+      {statusCode === 'pending_review' ? 'Chờ biên tập' : statusCode === 'approved' ? 'Chờ xuất bản' : statusName || statusCode}
     </div>
   )
 }
