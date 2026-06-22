@@ -1,4 +1,4 @@
-import { Badge } from '@/components/ui/badge'
+
 
 interface TinTucStatusBadgeProps {
   statusId?: number
@@ -42,17 +42,30 @@ export const TinTucStatusBadge = ({
     }
   }
 
+  const isProcessing = statusCode === 'pending_review' || statusCode === 'pending'
+
   return (
-    <Badge
-      variant="outline"
+    <div
+      className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border"
       style={{
-        backgroundColor: `${badgeColor}1A`, // 10% opacity for background
+        backgroundColor: `${badgeColor}1A`,
         color: badgeColor,
-        borderColor: badgeColor,
+        borderColor: `${badgeColor}40`,
       }}
-      className="font-medium whitespace-nowrap"
     >
+      <span className="relative flex h-2 w-2">
+        {isProcessing && (
+          <span
+            className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+            style={{ backgroundColor: badgeColor }}
+          />
+        )}
+        <span
+          className="relative inline-flex rounded-full h-2 w-2"
+          style={{ backgroundColor: badgeColor }}
+        />
+      </span>
       {statusName || statusCode}
-    </Badge>
+    </div>
   )
 }

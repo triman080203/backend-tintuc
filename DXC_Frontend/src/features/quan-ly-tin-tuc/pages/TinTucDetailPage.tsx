@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import { TinTucStatusBadge, TinTucWorkflowDialog, TinTucTimeline, type WorkflowActionCode } from '../components'
 import { useTinTucDetail } from '../hooks'
+import { useAuth } from '@/shared/hooks/useAuth'
 
 const TinTucDetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -37,19 +38,33 @@ const TinTucDetailPage = () => {
   }
 
   // Workflow state flags
-  const statusCode = detail?.currentStatusCode
-  const isDraft = statusCode === 'draft'
-  const isReturned = statusCode === 'returned'
-  const isPendingReview = statusCode === 'pending_review'
-  const isApproved = statusCode === 'approved'
-  const isPublished = statusCode === 'published'
+  const { user } = useAuth()
+  const roles = user?.roleCodes || []
+  
+  // Quyền: admin/manager coi như full quyền.
+  // Các roles nghiệp vụ: tong_bien_tap (Tổng biên tập), bien_tap_vien (Biên tập viên/editor), phong_vien (Phóng viên/reporter)
+  const isSuperAccess = roles.includes('admin') || roles.includes('manager') || roles.includes('tong_bien_tap')
+  const isBienTapVien = roles.includes('bien_tap_vien') || roles.includes('editor')
+  const isPhongVien = roles.includes('phong_vien') || roles.includes('reporter')
 
-  const canEdit = isDraft || isReturned
-  const canSubmit = isDraft || isReturned
-  const canApprove = isPendingReview
-  const canReturn = isPendingReview || isApproved
-  const canPublish = isApproved
-  const canArchive = isPublished
+  const isDraftOrReturned = detail?.currentStatusCode === 'draft' || detail?.currentStatusCode === 'returned'
+  const isPending = detail?.currentStatusCode === 'pending_review'
+  const isApproved = detail?.currentStatusCode === 'approved'
+  const isPublished = detail?.currentStatusCode === 'published'
+
+  // Phóng viên có thể tạo/sửa/gửi duyệt
+  const canEdit = isDraftOrReturned && (isSuperAccess || isBienTapVien || isPhongVien)
+  const canSubmit = isDraftOrReturned && (isSuperAccess || isBienTapVien || isPhongVien)
+  
+  // Biên tập viên có thể phê duyệt hoặc trả lại bài viết chờ duyệt
+  const canApprove = isPending && (isSuperAccess || isBienTapVien)
+  
+  // Tổng biên tập có thể trả lại bài đang chờ duyệt hoặc đã duyệt
+  const canReturn = (isPending && (isSuperAccess || isBienTapVien)) || (isApproved && isSuperAccess)
+  
+  // Xuất bản / Lưu trữ thường do Tổng biên tập hoặc Admin/Manager
+  const canPublish = isApproved && isSuperAccess
+  const canArchive = isPublished && isSuperAccess
 
   const formatDate = (date: string | null | undefined) => {
     if (!date) return 'Chưa có'
@@ -117,33 +132,8 @@ const TinTucDetailPage = () => {
               statusColor={detail.currentStatusColor ?? undefined}
             />
           </div>
-
-          <ActionBarDivider />
-
-          {/* Nút Chỉnh sửa (chỉ khi draft / returned) */}
-          {canEdit && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate(`/tin-tuc/${id}`)}
-              className="gap-2"
-            >
-              <Edit className="w-4 h-4 text-blue-600" />
-              Chỉnh sửa
-            </Button>
-          )}
-
-          {/* Nút Gửi duyệt (draft / returned) */}
-          {canSubmit && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => handleWorkflow('submit')}
-              className="gap-2"
-            >
-              <Send className="w-4 h-4 text-blue-600" />
-              Gửi duyệt
-            </Button>
+          {(canApprove || canReturn || canPublish || canArchive) && (
+            <ActionBarDivider />
           )}
 
           {/* Nút Phê duyệt (pending_review) */}

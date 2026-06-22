@@ -44,12 +44,31 @@ public static class GetDashboardStats
                     .CountAsync(cancellationToken);
             var totalUsers = await _coreDb.Users.AsNoTracking().Where(u => u.IsActive).CountAsync(cancellationToken);
 
+            // News stats
+            var totalNews = await _miniDb.TinTucArticles.AsNoTracking().Where(a => a.IsActive).CountAsync(cancellationToken);
+            
+            // Assuming status IDs are: 1 (draft), 2 (pending_review), 3 (returned), 4 (approved), 5 (published)
+            // It is safer to query by code, but for now we can just get counts grouped by status code if possible.
+            var newsStatuses = await _miniDb.TinTucStatuses.AsNoTracking().ToDictionaryAsync(s => s.Code, s => s.Id, cancellationToken);
+            
+            var pendingNewsId = newsStatuses.GetValueOrDefault("pending_review", 0);
+            var approvedNewsId = newsStatuses.GetValueOrDefault("approved", 0);
+            var publishedNewsId = newsStatuses.GetValueOrDefault("published", 0);
+            
+            var pendingNews = pendingNewsId > 0 ? await _miniDb.TinTucArticles.AsNoTracking().CountAsync(a => a.IsActive && a.CurrentStatusId == pendingNewsId, cancellationToken) : 0;
+            var approvedNews = approvedNewsId > 0 ? await _miniDb.TinTucArticles.AsNoTracking().CountAsync(a => a.IsActive && a.CurrentStatusId == approvedNewsId, cancellationToken) : 0;
+            var publishedNews = publishedNewsId > 0 ? await _miniDb.TinTucArticles.AsNoTracking().CountAsync(a => a.IsActive && a.CurrentStatusId == publishedNewsId, cancellationToken) : 0;
+
             var data = new DashboardStatsDto
             {
                 TotalFeedbacks = totalFeedbacks,
                 ProcessingFeedbacks = processingFeedbacks,
                 ApprovedFeedbackResponses = approvedFeedbacks,
-                TotalUsers = totalUsers
+                TotalUsers = totalUsers,
+                TotalNews = totalNews,
+                PendingNews = pendingNews,
+                ApprovedNews = approvedNews,
+                PublishedNews = publishedNews
             };
 
             return new ApiResult<DashboardStatsDto>

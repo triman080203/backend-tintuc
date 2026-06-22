@@ -35,55 +35,55 @@ export const DashboardPage = () => {
     day: 'numeric',
   })
 
-  // Feedback quick actions with role-based visibility
-  const feedbackActions = [
+  // News quick actions with role-based visibility
+  const newsActions = [
     {
-      id: 'feedback-list',
-      label: 'Điều phối phản ánh',
-      href: '/feedback',
+      id: 'news-list',
+      label: 'Tất cả tin bài',
+      href: '/tin-tuc',
       icon: ArrowRightLeft,
       iconColor: 'text-blue-600',
-      visible: hasRole('dieu_phoi_phan_anh'),
+      visible: hasRole('bien_tap_vien') || hasRole('tong_bien_tap'),
     },
     {
-      id: 'feedback-processing',
-      label: 'Xử lý phản ánh',
-      href: '/feedback/processing',
+      id: 'news-pending',
+      label: 'Tin bài chờ duyệt',
+      href: '/tin-tuc/cho-duyet',
       icon: Clock,
       iconColor: 'text-amber-600',
-      visible: hasRole('xu_ly_phan_anh'),
+      visible: hasRole('phong_vien') || hasRole('bien_tap_vien') || hasRole('tong_bien_tap'),
     },
     {
-      id: 'feedback-approval',
-      label: 'Phê duyệt phản ánh',
-      href: '/feedback/approval',
+      id: 'news-approved',
+      label: 'Tin bài đã duyệt',
+      href: '/tin-tuc/da-duyet',
       icon: CheckCircle,
       iconColor: 'text-green-600',
-      visible: hasRole('phe_duyet_phan_anh'),
+      visible: hasRole('phong_vien') || hasRole('bien_tap_vien') || hasRole('tong_bien_tap'),
     },
     {
-      id: 'feedback-public',
-      label: 'Phản ánh hoàn thành',
-      href: '/feedback/public',
+      id: 'news-published',
+      label: 'Tin bài đã xuất bản',
+      href: '/tin-tuc/da-xuat-ban',
       icon: FileCheck,
       iconColor: 'text-emerald-600',
-      visible: hasRole('phan_anh_hoan_thanh'),
+      visible: hasRole('tong_bien_tap'),
     },
     {
-      id: 'feedback-rejected',
-      label: 'Phản ánh từ chối',
-      href: '/feedback/rejected',
+      id: 'news-returned',
+      label: 'Tin bài chuyển trả',
+      href: '/tin-tuc/bi-tra-lai',
       icon: XCircle,
       iconColor: 'text-red-600',
-      visible: hasRole('phan_anh_tu_choi'),
+      visible: hasRole('phong_vien') || hasRole('bien_tap_vien'),
     },
     {
-      id: 'feedback-create',
-      label: 'Tạo phản ánh mới',
-      href: '/feedback/create',
+      id: 'news-create',
+      label: 'Tạo tin bài mới',
+      href: '/tin-tuc/create',
       icon: Plus,
       iconColor: 'text-blue-600',
-      visible: true,
+      visible: hasRole('phong_vien') || hasRole('bien_tap_vien') || hasRole('tong_bien_tap'),
     },
   ]
 
@@ -145,35 +145,35 @@ export const DashboardPage = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatsCard
-          title="Tổng số phản ánh"
-          value={stats?.totalFeedbacks ?? '--'}
+          title="Tổng số tin bài"
+          value={stats?.totalNews ?? '--'}
           icon={MessageSquare}
           iconColor="text-blue-600"
-          description="Tất cả phản ánh trong hệ thống"
+          description="Tất cả tin bài trong hệ thống"
           loading={statsLoading}
         />
         <StatsCard
-          title="Đang xử lý"
-          value={stats?.processingFeedbacks ?? '--'}
+          title="Chờ duyệt"
+          value={stats?.pendingNews ?? '--'}
           icon={Clock}
           iconColor="text-amber-600"
-          description="Phản ánh đang được xử lý"
+          description="Tin bài đang chờ phê duyệt"
           loading={statsLoading}
         />
         <StatsCard
           title="Đã phê duyệt"
-          value={stats?.approvedFeedbackResponses ?? '--'}
+          value={stats?.approvedNews ?? '--'}
           icon={CheckCircle}
           iconColor="text-green-600"
-          description="Phản ánh đã được phê duyệt"
+          description="Tin bài đã được phê duyệt"
           loading={statsLoading}
         />
         <StatsCard
-          title="Người dùng"
-          value={stats?.totalUsers ?? '--'}
-          icon={Users}
-          iconColor="text-purple-600"
-          description="Tổng số người dùng"
+          title="Đã xuất bản"
+          value={stats?.publishedNews ?? '--'}
+          icon={FileCheck}
+          iconColor="text-emerald-600"
+          description="Tin bài đã được xuất bản công khai"
           loading={statsLoading}
         />
       </div>
@@ -181,8 +181,8 @@ export const DashboardPage = () => {
       {/* Quick Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <QuickActionCard
-          title="Quản lý phản ánh"
-          actions={feedbackActions}
+          title="Quản lý tin tức"
+          actions={newsActions}
         />
         <QuickActionCard
           title="Quản lý hệ thống"

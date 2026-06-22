@@ -42,11 +42,11 @@ const TinTucBiTraLaiPage = () => {
   return (
     <>
       <ListPageLayout
-        title="Bị trả lại"
-        description="Danh sách tin bài bị trả lại, cần chỉnh sửa và gửi duyệt lại"
+        title="Chuyển trả"
+        description="Danh sách tin bài chuyển trả, cần chỉnh sửa và gửi duyệt lại"
         breadcrumbItems={[
           { label: 'Quản lý tin tức', href: '/tin-tuc' },
-          { label: 'Bị trả lại', current: true },
+          { label: 'Chuyển trả', current: true },
         ]}
         actionBarContent={
           <>

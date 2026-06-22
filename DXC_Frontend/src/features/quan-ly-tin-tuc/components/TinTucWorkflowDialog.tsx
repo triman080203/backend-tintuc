@@ -97,7 +97,7 @@ export const TinTucWorkflowDialog = ({
   const { mutate, isPending } = useMutation({
     mutationFn: (data: WorkflowTinTucFormData) =>
       getTinTucAdmin().postApiAdminTintucPublicIdWorkflow(publicId!, {
-        actionCode: data.actionCode,
+        action: data.actionCode,
         note: data.note || undefined,
       }),
     onSuccess: (res) => {
@@ -111,7 +111,7 @@ export const TinTucWorkflowDialog = ({
       }
     },
     onError: (error: unknown) => {
-      const err = error as any
+      const err = error as { response?: { data?: { message?: string } } }
       const message = err?.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại'
       toast.error(message)
     },

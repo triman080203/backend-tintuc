@@ -11,7 +11,7 @@ import { getTinTucAdmin } from '@/api/endpoints/tin-tuc-admin'
 import type { TinTucFormData } from '../schemas'
 
 const TinTucUpdatePage = () => {
-  const { publicId } = useParams<{ publicId: string }>()
+  const { id: publicId } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const submitRef = useRef<(() => void) | null>(null)

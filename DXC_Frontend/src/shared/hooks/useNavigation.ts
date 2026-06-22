@@ -25,7 +25,8 @@ const isPathMatchingRoute = (currentPath: string, href: string | undefined): boo
     // Known feature-specific routes that should not match parent
     const featureRoutes = new Set([
       'processing', 'approval', 'public', 'rejected', 'create', 'edit',
-      'import', 'export', 'filter', 'search', 'settings', 'config'
+      'import', 'export', 'filter', 'search', 'settings', 'config',
+      'ban-nhap', 'cho-duyet', 'da-duyet', 'da-xuat-ban', 'bi-tra-lai', 'categories'
     ])
     
     // If first segment is a feature route name, don't match parent

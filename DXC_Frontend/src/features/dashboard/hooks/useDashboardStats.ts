@@ -6,6 +6,10 @@ type DashboardStatsDto = {
   processingFeedbacks: number
   approvedFeedbackResponses: number
   totalUsers: number
+  totalNews: number
+  pendingNews: number
+  approvedNews: number
+  publishedNews: number
 }
 
 type ApiResult<T> = {
